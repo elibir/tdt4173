@@ -1,2 +1,2 @@
-# tdt4173
+# TDT4173
 Group project in the course TDT4173 - Machine Learning at NTNU.
