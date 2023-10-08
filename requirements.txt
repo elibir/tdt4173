@@ -3,3 +3,6 @@ numpy
 matplotlib
 pyarrow
 fastparquet
+scikit-learn
+seaborn
+xgboost
