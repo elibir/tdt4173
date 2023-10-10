@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
 
 
 def plot_ts(y, x, start, end, feature, shareX: bool):
@@ -16,8 +15,11 @@ def plot_ts(y, x, start, end, feature, shareX: bool):
         i += 1
   
 def quarter_to_hour(df):    
-    # first, take the mean of every hour in the X value dataset, to match the resolution of the y-values.
-    for i in range(0, len(df), 4):
-        if i + 4 <= len(df):
-            mean_values = df.iloc[i:i+4].mean()
-            df.iloc[i] = mean_values
+    
+    new_df = df.copy()
+    
+    for i in range(0, len(new_df), 4):
+        if i + 4 <= len(new_df):
+            mean_values = new_df.iloc[i:i+4].mean()
+            new_df.iloc[i] = mean_values
+    return new_df
