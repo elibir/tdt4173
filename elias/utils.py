@@ -2,7 +2,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def plot_ts(y, x, start, end, feature, shareX: bool):
+def plot_ts(y: pd.DataFrame, x:pd.DataFrame, start, end, feature, shareX: bool):
+    """
+    Plots all the y arrays, then all the x arrays.
+    """
     fig, axs = plt.subplots(len(x)+len(y), 1, figsize=(15,10), sharex=shareX)
     i = 0
     for df in y:
@@ -13,9 +16,31 @@ def plot_ts(y, x, start, end, feature, shareX: bool):
         df[(df.index >= start) & (df.index <= end)].resample("H").mean()[feature].plot(ax=axs[i], label=feature, color="red")
         axs[i].legend()
         i += 1
+    
+            
+def plot_ts1(y: pd.DataFrame, x:pd.DataFrame, start, end, feature, shareX: bool):
+    """
+    Plots the y and x values directly under each other for each location
+    """
+    
+    if len(x) != len(y):
+        print("Error: arrays 'y' and 'x' are different lengths. Please provide equal sized arrays.")
+    else:
+        fig, axs = plt.subplots(len(x)+len(y), 1, figsize=(15,10), sharex=shareX)
+        i = 0
+        for df_y, df_x in zip(y, x):
+                df_y[(df_y.index >= start) & (df_y.index <= end)].resample("H").mean().plot(ax=axs[i])
+                i += 1
+                df_x[(df_x.index >= start) & (df_x.index <= end)].resample("H").mean()[feature].plot(ax=axs[i], label=feature, color="red")
+                axs[i].legend()
+                i += 1
+  
   
 def quarter_to_hour(df):    
-    
+    """
+    Unused function. Experimentation with taking the average weather values across an hour yielded
+    worse results than not doing it.
+    """
     new_df = df.copy()
     
     for i in range(0, len(new_df), 4):
@@ -24,11 +49,13 @@ def quarter_to_hour(df):
             new_df.iloc[i] = mean_values
     return new_df
 
+
 def create_features(df):
     new_df = df.copy()
     new_df['hour'] = new_df.index.hour
     new_df['dayofyear'] = new_df.index.dayofyear
     return new_df
+
 
 def remove_constant_values(df, column_name, threshold):
     
@@ -43,7 +70,4 @@ def remove_constant_values(df, column_name, threshold):
     return filtered_df
 
 
-# # Sample DataFrame (replace this with your actual DataFrame)
-# data = {'value_column': [1, 2, 2, 2, 3, 3, 3, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 8, 8]}
-# frame = pd.DataFrame(data)
-# print(remove_constant_values(frame, "value_column", 3))
+
