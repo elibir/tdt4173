@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 
 def plot_ts(y: pd.DataFrame, x:pd.DataFrame, start, end, feature, shareX: bool):
@@ -68,6 +69,18 @@ def remove_constant_values(df, column_name, threshold):
     filtered_df = new_df[~new_df.index.isin(consecutive_constants.index)]
     
     return filtered_df
+
+def replace_constant_values_with_nan(df, column_name, threshold):
+    new_df = df.copy()
+
+    # Find the consecutive constant rows
+    consecutive_constants = new_df.groupby((new_df[column_name] != new_df[column_name].shift()).cumsum()).filter(lambda x: len(x) > threshold)
+
+    # Replace constant values with NaN within the original DataFrame
+    new_df.loc[new_df.index.isin(consecutive_constants.index), column_name] = np.nan
+    
+    return new_df
+
 
 
 
