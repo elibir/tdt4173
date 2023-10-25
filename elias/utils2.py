@@ -55,8 +55,16 @@ def create_features(df):
     new_df = df.copy()
     new_df['hour'] = new_df.index.hour
     new_df['dayofyear'] = new_df.index.dayofyear
+    # new_df = df.copy()
+    # new_df['hour'] = new_df.index.hour
+    # new_df['dayofweek'] = new_df.index.dayofweek
+    # new_df['quarter'] = new_df.index.quarter
+    # new_df['month'] = new_df.index.month
+    # new_df['year'] = new_df.index.year
+    # new_df['dayofyear'] = new_df.index.dayofyear
+    # new_df['dayofmonth'] = new_df.index.day
+    # new_df['weekofyear'] = new_df.index.isocalendar()[1]
     return new_df
-
 
 def remove_constant_values(df, column_name, threshold):
     
@@ -80,6 +88,28 @@ def replace_constant_values_with_nan(df, column_name, threshold):
     new_df.loc[new_df.index.isin(consecutive_constants.index), column_name] = np.nan
     
     return new_df
+
+# def remove_constant_values(df, column_name, threshold):
+#     new_df = df.copy()
+
+#     # Find the consecutive constant rows
+#     consecutive_constants = new_df.groupby((new_df[column_name] != new_df[column_name].shift()).cumsum()).filter(lambda x: len(x) > threshold)
+
+#     # Filter out the consecutive constant rows from the original DataFrame while keeping constant 0 values
+#     filtered_df = new_df[~new_df.index.isin(consecutive_constants.index) | (new_df[column_name] == 0)]
+    
+#     return filtered_df
+
+# def replace_constant_values_with_nan(df, column_name, threshold):
+#     new_df = df.copy()
+
+#     # Find the consecutive constant rows
+#     consecutive_constants = new_df.groupby((new_df[column_name] != new_df[column_name].shift()).cumsum()).filter(lambda x: len(x) > threshold)
+
+#     # Replace constant values (excluding 0) with NaN within the original DataFrame
+#     new_df.loc[new_df.index.isin(consecutive_constants.index) & (new_df[column_name] != 0), column_name] = np.nan
+    
+#     return new_df
 
 
 
