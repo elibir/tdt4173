@@ -6,3 +6,8 @@ fastparquet
 scikit-learn
 seaborn
 xgboost
+autogluon
+autogluon.eda
+autogluon.tabular
+
+
